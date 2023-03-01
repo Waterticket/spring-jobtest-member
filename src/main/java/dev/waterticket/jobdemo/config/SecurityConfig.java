@@ -18,9 +18,10 @@ public class SecurityConfig {
         http.authorizeHttpRequests()
                 .requestMatchers("/api/**").hasRole(UserRole.ADMIN)
                 .and()
-                .csrf()
-                .disable()
-                .httpBasic();
+                    .csrf()
+                    .ignoringRequestMatchers("/api/**")
+                .and()
+                    .httpBasic();
 
         http.authorizeHttpRequests()
                 .requestMatchers("/login", "/signup").permitAll()
