@@ -44,7 +44,7 @@ public class UserService {
         return users;
     }
 
-    public User insert(User user) {
+    public User insert(User user) throws SameIDExistsException {
         try {
             User oldUser = this.getUserById(user.getId());
             if (oldUser != null) {
@@ -57,7 +57,9 @@ public class UserService {
         return this.userRepository.save(user);
     }
 
-    public User save(User user) {
+    public User updateName(String id, String name) throws UserNotFoundException {
+        User user = this.getUserById(id);
+        user.setName(name);
         return this.userRepository.save(user);
     }
 }

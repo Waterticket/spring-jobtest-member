@@ -3,6 +3,7 @@ package dev.waterticket.jobdemo.user.controller;
 import dev.waterticket.jobdemo.user.domain.User;
 import dev.waterticket.jobdemo.user.dto.UserAddRequest;
 import dev.waterticket.jobdemo.user.dto.UserResponse;
+import dev.waterticket.jobdemo.user.dto.UserUpdateRequest;
 import dev.waterticket.jobdemo.user.service.UserService;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
@@ -61,6 +62,18 @@ public class UserController {
                 .id(newUser.getId())
                 .name(newUser.getName())
                 .auth(newUser.getAuth())
+                .build();
+    }
+
+    @PutMapping
+    public UserResponse updateMemberName(@RequestBody @Valid final UserUpdateRequest userUpdateRequest) {
+        User user = this.userService.updateName(userUpdateRequest.getId(), userUpdateRequest.getName());
+
+        return UserResponse.builder()
+                .idx(user.getIdx())
+                .id(user.getId())
+                .name(user.getName())
+                .auth(user.getAuth())
                 .build();
     }
 }
