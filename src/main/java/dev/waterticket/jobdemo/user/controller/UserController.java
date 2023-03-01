@@ -3,9 +3,6 @@ package dev.waterticket.jobdemo.user.controller;
 import dev.waterticket.jobdemo.user.domain.User;
 import dev.waterticket.jobdemo.user.dto.UserAddRequest;
 import dev.waterticket.jobdemo.user.dto.UserResponse;
-import dev.waterticket.jobdemo.user.exception.ParameterException;
-import dev.waterticket.jobdemo.user.exception.SameIDExistsException;
-import dev.waterticket.jobdemo.user.exception.UserNotFoundException;
 import dev.waterticket.jobdemo.user.service.UserService;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
@@ -58,25 +55,12 @@ public class UserController {
 
     @PostMapping
     public UserResponse insertMember(@RequestBody @Valid final UserAddRequest userAddRequest) {
-        try {
-            User user = this.userService.getUserById(userAddRequest.getId());
-            if (user != null) {
-                throw new SameIDExistsException();
-            }
-        } catch (UserNotFoundException e) {
-            // do nothing
-        }
-
-        try {
-            User newUser = this.userService.save(userAddRequest.toEntity());
-            return UserResponse.builder()
-                    .idx(newUser.getIdx())
-                    .id(newUser.getId())
-                    .name(newUser.getName())
-                    .auth(newUser.getAuth())
-                    .build();
-        } catch (Exception e) {
-            throw new ParameterException();
-        }
+        User newUser = this.userService.insert(userAddRequest.toEntity());
+        return UserResponse.builder()
+                .idx(newUser.getIdx())
+                .id(newUser.getId())
+                .name(newUser.getName())
+                .auth(newUser.getAuth())
+                .build();
     }
 }

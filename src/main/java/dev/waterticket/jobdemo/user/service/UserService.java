@@ -1,6 +1,7 @@
 package dev.waterticket.jobdemo.user.service;
 
 import dev.waterticket.jobdemo.user.domain.User;
+import dev.waterticket.jobdemo.user.exception.SameIDExistsException;
 import dev.waterticket.jobdemo.user.exception.UserNotFoundException;
 import dev.waterticket.jobdemo.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,19 @@ public class UserService {
         }
 
         return users;
+    }
+
+    public User insert(User user) {
+        try {
+            User oldUser = this.getUserById(user.getId());
+            if (oldUser != null) {
+                throw new SameIDExistsException();
+            }
+        } catch (UserNotFoundException e) {
+            // do nothing
+        }
+
+        return this.userRepository.save(user);
     }
 
     public User save(User user) {
