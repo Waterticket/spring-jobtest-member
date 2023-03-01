@@ -36,4 +36,21 @@ public class UserController {
                 .auth(user.getAuth())
                 .build();
     }
+
+    @GetMapping("/id/{id}")
+    public UserResponse getMemberById(@PathVariable("id") String id) {
+        User user = this.userService.getUserById(id);
+        return UserResponse.builder()
+                .idx(user.getIdx())
+                .id(user.getId())
+                .name(user.getName())
+                .auth(user.getAuth())
+                .build();
+    }
+
+    @GetMapping("/name/{name}")
+    public List<UserResponse> getMemberByName(@PathVariable("name") String name) {
+        List<User> users = this.userService.getUserByName(name);
+        return UserResponse.listOf(users);
+    }
 }

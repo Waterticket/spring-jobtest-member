@@ -28,4 +28,18 @@ public class UserService {
 
         return users;
     }
+
+    public User getUserById(String id) {
+        return this.userRepository.findById(id)
+                .orElseThrow(UserNotFoundException::new);
+    }
+
+    public List<User> getUserByName(String name) {
+        List<User> users = this.userRepository.findAllByName(name);
+        if (users == null || users.isEmpty()) {
+            throw new UserNotFoundException();
+        }
+
+        return users;
+    }
 }
