@@ -1,10 +1,22 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Index</title>
 </head>
 <body>
-인덱스 페이지 입니다.
+<div sec:authorize="isAuthenticated()">
+    <a th:href="@{/logout}">Logout</a>
+    <span sec:authorize="hasAnyRole('ROLE_SYSTEM_ADMIN')"> | <a th:href="@{/admin}">관리자 페이지</a></span>
+
+    <p><span sec:authentication="name"></span>님 환영합니다.</p>
+    <p>권한 목록 : <span sec:authentication="principal.authorities"></span></p>
+</div>
+
+<div sec:authorize="isAnonymous()">
+    <a th:href="@{/login}">Login</a> | <a th:href="@{/signup}">Signup</a>
+</div>
 </body>
 </html>

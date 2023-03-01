@@ -24,7 +24,7 @@ public class SecurityConfig {
                     .httpBasic();
 
         http.authorizeHttpRequests()
-                .requestMatchers("/login", "/signup").permitAll()
+                .requestMatchers("/", "/login", "/signup").permitAll()
                 .requestMatchers("/admin/**").hasRole(UserRole.ADMIN)
                 .anyRequest().authenticated()
                 .and()
