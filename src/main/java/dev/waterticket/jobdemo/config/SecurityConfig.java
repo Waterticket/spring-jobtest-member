@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -18,6 +19,22 @@ public class SecurityConfig {
                 .csrf()
                 .disable()
                 .httpBasic();
+
+        http.authorizeHttpRequests()
+                .requestMatchers("/login", "/signup").permitAll()
+                .requestMatchers("/admin/**").hasRole(UserRole.ADMIN)
+                .anyRequest().authenticated()
+                .and()
+                    .formLogin()
+                    .defaultSuccessUrl("/")
+                .and()
+                    .logout()
+                    .logoutSuccessUrl("/")
+                .and()
+                    .csrf()
+                .and()
+                    .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
 
         return http.build();
     }
