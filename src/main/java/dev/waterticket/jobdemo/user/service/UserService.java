@@ -4,6 +4,7 @@ import dev.waterticket.jobdemo.user.domain.User;
 import dev.waterticket.jobdemo.user.exception.SameIDExistsException;
 import dev.waterticket.jobdemo.user.exception.UserNotFoundException;
 import dev.waterticket.jobdemo.user.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,9 +12,11 @@ import java.util.List;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User getUserByIdx(int idx) {
@@ -53,6 +56,8 @@ public class UserService {
         } catch (UserNotFoundException e) {
             // do nothing
         }
+
+        user.setPassword(this.passwordEncoder.encode(user.getPassword()));
 
         return this.userRepository.save(user);
     }
