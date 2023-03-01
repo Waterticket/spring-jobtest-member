@@ -1,12 +1,12 @@
 package dev.waterticket.jobdemo.user.controller;
 
 import dev.waterticket.jobdemo.user.domain.User;
+import dev.waterticket.jobdemo.user.dto.UserAddRequest;
 import dev.waterticket.jobdemo.user.dto.UserResponse;
+import dev.waterticket.jobdemo.user.exception.ParameterException;
 import dev.waterticket.jobdemo.user.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -52,5 +52,20 @@ public class UserController {
     public List<UserResponse> getMemberByName(@PathVariable("name") String name) {
         List<User> users = this.userService.getUserByName(name);
         return UserResponse.listOf(users);
+    }
+
+    @PostMapping
+    public UserResponse insertMember(@RequestBody @Valid final UserAddRequest userAddRequest) {
+        try {
+            User user = this.userService.save(userAddRequest.toEntity());
+            return UserResponse.builder()
+                    .idx(user.getIdx())
+                    .id(user.getId())
+                    .name(user.getName())
+                    .auth(user.getAuth())
+                    .build();
+        } catch (Exception e) {
+            throw new ParameterException();
+        }
     }
 }
