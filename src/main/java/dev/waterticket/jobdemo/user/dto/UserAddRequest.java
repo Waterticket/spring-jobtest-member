@@ -26,14 +26,12 @@ public class UserAddRequest {
     @Size(min = 4, max = 20, message = "권한은 4~20자로 입력해주세요")
     private String auth = "USER";
 
-    private String password = "";
-
     public User toEntity() {
         return User.builder()
                 .id(id)
                 .name(name)
                 .auth(auth)
-                .password(password)
+                .password(id)
                 .build();
     }
 }
