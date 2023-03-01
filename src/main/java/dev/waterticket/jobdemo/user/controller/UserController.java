@@ -4,7 +4,7 @@ import dev.waterticket.jobdemo.user.domain.User;
 import dev.waterticket.jobdemo.user.dto.UserAddRequest;
 import dev.waterticket.jobdemo.user.dto.UserDeleteRequest;
 import dev.waterticket.jobdemo.user.dto.UserResponse;
-import dev.waterticket.jobdemo.user.dto.UserUpdateRequest;
+import dev.waterticket.jobdemo.user.dto.UserUpdateNameRequest;
 import dev.waterticket.jobdemo.user.service.UserService;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
@@ -28,7 +28,7 @@ public class UserController {
 
 
     @GetMapping("/idx/{idx}")
-    public UserResponse getMemberByIdx(@PathVariable("idx") Integer idx) {
+    public UserResponse getMemberByIdx(@PathVariable("idx") final Integer idx) {
         User user = this.userService.getUserByIdx(idx);
         return UserResponse.builder()
                 .idx(user.getIdx())
@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @GetMapping("/id/{id}")
-    public UserResponse getMemberById(@PathVariable("id") String id) {
+    public UserResponse getMemberById(@PathVariable("id") final String id) {
         User user = this.userService.getUserById(id);
         return UserResponse.builder()
                 .idx(user.getIdx())
@@ -50,7 +50,7 @@ public class UserController {
     }
 
     @GetMapping("/name/{name}")
-    public List<UserResponse> getMemberByName(@PathVariable("name") String name) {
+    public List<UserResponse> getMemberByName(@PathVariable("name") final String name) {
         List<User> users = this.userService.getUserByName(name);
         return UserResponse.listOf(users);
     }
@@ -67,8 +67,8 @@ public class UserController {
     }
 
     @PutMapping
-    public UserResponse updateMemberName(@RequestBody @Valid final UserUpdateRequest userUpdateRequest) {
-        User user = this.userService.updateName(userUpdateRequest.getId(), userUpdateRequest.getName());
+    public UserResponse updateMemberName(@RequestBody @Valid final UserUpdateNameRequest userUpdateNameRequest) {
+        User user = this.userService.updateName(userUpdateNameRequest.getId(), userUpdateNameRequest.getName());
 
         return UserResponse.builder()
                 .idx(user.getIdx())

@@ -1,6 +1,7 @@
 package dev.waterticket.jobdemo.user.service;
 
 import dev.waterticket.jobdemo.user.domain.User;
+import dev.waterticket.jobdemo.user.dto.UserUpdateRequest;
 import dev.waterticket.jobdemo.user.exception.SameIDExistsException;
 import dev.waterticket.jobdemo.user.exception.UserNotFoundException;
 import dev.waterticket.jobdemo.user.repository.UserRepository;
@@ -65,6 +66,19 @@ public class UserService {
     public User updateName(String id, String name) throws UserNotFoundException {
         User user = this.getUserById(id);
         user.setName(name);
+        return this.userRepository.save(user);
+    }
+
+    public User update(Integer idx, UserUpdateRequest userUpdateRequest) throws UserNotFoundException {
+        User user = this.getUserByIdx(idx);
+        user.setId(userUpdateRequest.getId());
+        user.setName(userUpdateRequest.getName());
+        user.setAuth(userUpdateRequest.getAuth());
+
+        if (userUpdateRequest.getPassword().isBlank()) {
+            user.setPassword(this.passwordEncoder.encode(userUpdateRequest.getPassword()));
+        }
+
         return this.userRepository.save(user);
     }
 

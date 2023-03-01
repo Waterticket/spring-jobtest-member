@@ -22,12 +22,12 @@ public class SignupController {
     }
 
     @GetMapping
-    public String signup(@ModelAttribute UserSignupRequest userSignupRequest) {
+    public String signup(@ModelAttribute final UserSignupRequest userSignupRequest) {
         return "signup";
     }
 
     @PostMapping
-    public String signupPost(@Valid @ModelAttribute UserSignupRequest userSignupRequest, BindingResult bindingResult) {
+    public String signupPost(@Valid @ModelAttribute final UserSignupRequest userSignupRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "signup";
         }

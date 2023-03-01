@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>회원 수정</title>
+</head>
+<body>
+  <h4>회원 수정</h4>
+
+  <form th:action th:object="${user}" th:method="put">
+    <p>아이디 : <input type="text" name="id" th:field="*{id}" th:value="*{id}" th:errorclass="field-error" /></p>
+    <div class="field-error" th:errors="*{id}" />
+
+    <p>비밀번호 : <input type="password" name="password" th:field="*{password}" placeholder="미입력시 변경 안함" th:errorclass="field-error" /></p>
+    <div class="field-error" th:errors="*{password}" />
+
+    <p>이름 : <input type="text" name="name" th:field="*{name}" th:value="*{name}" th:errorclass="field-error" /></p>
+    <div class="field-error" th:errors="*{name}" />
+
+    <p>권한 : <input type="text" name="auth" th:field="*{auth}" th:value="*{auth}" th:errorclass="field-error" /></p>
+    <div class="field-error" th:errors="*{auth}" />
+    <input type="submit" value="수정">
+  </form>
+</body>
+</html>

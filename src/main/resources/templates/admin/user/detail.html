@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>회원 상세정보</title>
+</head>
+<body th:object="${user}">
+    <h4>회원 상세정보</h4>
+    <p>아이디 : <span th:text="*{id}"></span></p>
+    <p>비밀번호 : <span>(암호화됨)</span></p>
+    <p>이름 : <span th:text="*{name}"></span></p>
+    <p>권한 : <span th:text="*{auth}"></span></p>
+    <a th:href="@{/admin/user/{idx}/edit(idx=*{idx})}">수정</a>
+    <a th:href="@{/admin/user/{idx}/delete(idx=*{idx})}">삭제</a>
+</body>
+</html>
