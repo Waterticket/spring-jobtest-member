@@ -26,7 +26,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/{idx}")
+    @GetMapping("/idx/{idx}")
     public UserResponse getMemberByIdx(@PathVariable("idx") Integer idx) {
         User user = this.userService.getUserByIdx(idx);
         return UserResponse.builder()
