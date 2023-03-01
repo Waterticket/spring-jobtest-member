@@ -2,6 +2,7 @@ package dev.waterticket.jobdemo.user.controller;
 
 import dev.waterticket.jobdemo.user.domain.User;
 import dev.waterticket.jobdemo.user.dto.UserAddRequest;
+import dev.waterticket.jobdemo.user.dto.UserDeleteRequest;
 import dev.waterticket.jobdemo.user.dto.UserResponse;
 import dev.waterticket.jobdemo.user.dto.UserUpdateRequest;
 import dev.waterticket.jobdemo.user.service.UserService;
@@ -68,6 +69,18 @@ public class UserController {
     @PutMapping
     public UserResponse updateMemberName(@RequestBody @Valid final UserUpdateRequest userUpdateRequest) {
         User user = this.userService.updateName(userUpdateRequest.getId(), userUpdateRequest.getName());
+
+        return UserResponse.builder()
+                .idx(user.getIdx())
+                .id(user.getId())
+                .name(user.getName())
+                .auth(user.getAuth())
+                .build();
+    }
+
+    @DeleteMapping
+    public UserResponse deleteMember(@RequestBody @Valid final UserDeleteRequest userDeleteRequest) {
+        User user = this.userService.delete(userDeleteRequest.getId());
 
         return UserResponse.builder()
                 .idx(user.getIdx())

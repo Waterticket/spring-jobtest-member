@@ -62,4 +62,10 @@ public class UserService {
         user.setName(name);
         return this.userRepository.save(user);
     }
+
+    public User delete(String id) throws UserNotFoundException {
+        User user = this.getUserById(id);
+        this.userRepository.delete(user);
+        return user;
+    }
 }
