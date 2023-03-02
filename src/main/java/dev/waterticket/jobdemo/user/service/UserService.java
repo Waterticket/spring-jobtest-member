@@ -75,7 +75,7 @@ public class UserService {
         user.setName(userUpdateRequest.getName());
         user.setAuth(userUpdateRequest.getAuth());
 
-        if (userUpdateRequest.getPassword().isBlank()) {
+        if (!userUpdateRequest.getPassword().isBlank()) {
             user.setPassword(this.passwordEncoder.encode(userUpdateRequest.getPassword()));
         }
 
