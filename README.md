@@ -4,6 +4,7 @@ Spring Boot를 활용하여 제작한 기술과제입니다.
 - Spring Boot 3.0.3
 - MariaDB 10.8
 
+<br>
 
 ## UserResponse 객체
 
@@ -29,6 +30,8 @@ Authorization 헤더에 `basic id:pass`로 인증 정보를 포함하여 요청�
 인증에 성공하더라도 `SYSTEM_ADMIN` 권한을 가지고 있지 않은 경우 `403 Forbidden`을 반환합니다.
 
 파라메터가 부족하다면 `400 Bad Request`를 반환합니다.
+
+<br>
 
 ### 전체 회원 목록 [GET]
 
@@ -131,3 +134,47 @@ Authorization 헤더에 `basic id:pass`로 인증 정보를 포함하여 요청�
 
 #### Response 404
 - id와 일치하는 유저가 없다면 UserNotFoundException이 돌아옵니다.
+
+<br>
+
+---
+
+### 회원 번호 검색 [GET /api/user/idx/{idx}]
+
+회원 번호와 일치하는 회원을 가져옵니다.
+
+#### Response 200 (application/json)
+- 성공했다면 UserResponse 객체가 돌아옵니다.
+
+#### Response 404
+- 일치하는 유저가 없다면 UserNotFoundException이 돌아옵니다.
+
+<br>
+
+---
+
+### 회원 ID 검색 [GET /api/user/id/{id}]
+
+회원 ID와 일치하는 회원을 가져옵니다.
+
+#### Response 200 (application/json)
+- 성공했다면 UserResponse 객체가 돌아옵니다.
+
+#### Response 404
+- 일치하는 유저가 없다면 UserNotFoundException이 돌아옵니다.
+
+<br>
+
+---
+
+### 회원 이름 검색 [GET /api/user/name/{name}]
+
+회원 이름이 일치하는 회원 들을 가져옵니다.
+
+#### Response 200 (application/json)
+- 성공했다면 UserResponse List가 돌아옵니다.
+
+#### Response 404
+- 일치하는 유저가 없다면 UserNotFoundException이 돌아옵니다.
+
+<br>
