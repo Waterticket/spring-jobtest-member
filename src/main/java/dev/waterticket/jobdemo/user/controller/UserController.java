@@ -8,6 +8,7 @@ import dev.waterticket.jobdemo.user.dto.UserUpdateNameRequest;
 import dev.waterticket.jobdemo.user.service.UserHistoryService;
 import dev.waterticket.jobdemo.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
@@ -29,7 +30,6 @@ public class UserController {
         List<User> users = this.userService.getUserAll();
         return UserResponse.listOf(users);
     }
-
 
     @GetMapping("/idx/{idx}")
     public UserResponse getMemberByIdx(@PathVariable("idx") final Integer idx) {
@@ -60,6 +60,7 @@ public class UserController {
     }
 
     @PostMapping
+    @ResponseStatus(value = HttpStatus.CREATED)
     public UserResponse insertMember(@RequestBody @Valid final UserAddRequest userAddRequest, HttpServletRequest request) {
         User newUser = this.userService.insert(userAddRequest.toEntity());
         this.userHistoryService.createUser(newUser.getIdx(), request.getRequestURI(), request.getRemoteAddr());
@@ -72,6 +73,7 @@ public class UserController {
     }
 
     @PutMapping
+    @ResponseStatus(value = HttpStatus.OK)
     public UserResponse updateMemberName(@RequestBody @Valid final UserUpdateNameRequest userUpdateNameRequest, HttpServletRequest request) {
         User user = this.userService.updateName(userUpdateNameRequest.getId(), userUpdateNameRequest.getName());
         this.userHistoryService.updateUser(user.getIdx(), request.getRequestURI(), request.getRemoteAddr());
@@ -85,6 +87,7 @@ public class UserController {
     }
 
     @DeleteMapping
+    @ResponseStatus(value = HttpStatus.OK)
     public UserResponse deleteMember(@RequestBody @Valid final UserDeleteRequest userDeleteRequest, HttpServletRequest request) {
         User user = this.userService.delete(userDeleteRequest.getId());
         this.userHistoryService.deleteUser(user.getIdx(), request.getRequestURI(), request.getRemoteAddr());
