@@ -5,7 +5,9 @@ import dev.waterticket.jobdemo.user.dto.UserAddRequest;
 import dev.waterticket.jobdemo.user.dto.UserDeleteRequest;
 import dev.waterticket.jobdemo.user.dto.UserResponse;
 import dev.waterticket.jobdemo.user.dto.UserUpdateNameRequest;
+import dev.waterticket.jobdemo.user.service.UserHistoryService;
 import dev.waterticket.jobdemo.user.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
@@ -15,9 +17,11 @@ import java.util.List;
 @RequestMapping("/api/user")
 public class UserController {
     private final UserService userService;
+    private final UserHistoryService userHistoryService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserHistoryService userHistoryService) {
         this.userService = userService;
+        this.userHistoryService = userHistoryService;
     }
 
     @GetMapping
@@ -56,8 +60,9 @@ public class UserController {
     }
 
     @PostMapping
-    public UserResponse insertMember(@RequestBody @Valid final UserAddRequest userAddRequest) {
+    public UserResponse insertMember(@RequestBody @Valid final UserAddRequest userAddRequest, HttpServletRequest request) {
         User newUser = this.userService.insert(userAddRequest.toEntity());
+        this.userHistoryService.createUser(newUser.getIdx(), request.getRequestURI(), request.getRemoteAddr());
         return UserResponse.builder()
                 .idx(newUser.getIdx())
                 .id(newUser.getId())
@@ -67,8 +72,9 @@ public class UserController {
     }
 
     @PutMapping
-    public UserResponse updateMemberName(@RequestBody @Valid final UserUpdateNameRequest userUpdateNameRequest) {
+    public UserResponse updateMemberName(@RequestBody @Valid final UserUpdateNameRequest userUpdateNameRequest, HttpServletRequest request) {
         User user = this.userService.updateName(userUpdateNameRequest.getId(), userUpdateNameRequest.getName());
+        this.userHistoryService.updateUser(user.getIdx(), request.getRequestURI(), request.getRemoteAddr());
 
         return UserResponse.builder()
                 .idx(user.getIdx())
@@ -79,8 +85,9 @@ public class UserController {
     }
 
     @DeleteMapping
-    public UserResponse deleteMember(@RequestBody @Valid final UserDeleteRequest userDeleteRequest) {
+    public UserResponse deleteMember(@RequestBody @Valid final UserDeleteRequest userDeleteRequest, HttpServletRequest request) {
         User user = this.userService.delete(userDeleteRequest.getId());
+        this.userHistoryService.deleteUser(user.getIdx(), request.getRequestURI(), request.getRemoteAddr());
 
         return UserResponse.builder()
                 .idx(user.getIdx())

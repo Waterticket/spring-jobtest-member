@@ -2,7 +2,9 @@ package dev.waterticket.jobdemo.user.controller;
 
 import dev.waterticket.jobdemo.user.domain.User;
 import dev.waterticket.jobdemo.user.dto.UserUpdateRequest;
+import dev.waterticket.jobdemo.user.service.UserHistoryService;
 import dev.waterticket.jobdemo.user.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,9 +16,11 @@ import java.util.List;
 @RequestMapping("/admin/user")
 public class UserAdminController {
     private final UserService userService;
+    private final UserHistoryService userHistoryService;
 
-    public UserAdminController(UserService userService) {
+    public UserAdminController(UserService userService, UserHistoryService userHistoryService) {
         this.userService = userService;
+        this.userHistoryService = userHistoryService;
     }
 
     @GetMapping
@@ -41,8 +45,9 @@ public class UserAdminController {
     }
 
     @PutMapping("/{idx}/edit")
-    public String memberEdit(@Valid @ModelAttribute final UserUpdateRequest userUpdateRequest, @PathVariable("idx") final Integer idx) {
-        this.userService.update(idx, userUpdateRequest);
+    public String memberEdit(@Valid @ModelAttribute final UserUpdateRequest userUpdateRequest, @PathVariable("idx") final Integer idx, HttpServletRequest request) {
+        User user = this.userService.update(idx, userUpdateRequest);
+        this.userHistoryService.updateUser(user.getIdx(), request.getRequestURI(), request.getRemoteAddr());
         return "redirect:/admin/user/{idx}";
     }
 
@@ -54,9 +59,10 @@ public class UserAdminController {
     }
 
     @DeleteMapping("/{idx}/delete")
-    public String memberDelete(@PathVariable("idx") final Integer idx) {
+    public String memberDelete(@PathVariable("idx") final Integer idx, HttpServletRequest request) {
         User user = this.userService.getUserByIdx(idx);
         this.userService.delete(user.getId());
+        this.userHistoryService.deleteUser(user.getIdx(), request.getRequestURI(), request.getRemoteAddr());
         return "redirect:/admin/user";
     }
 }
