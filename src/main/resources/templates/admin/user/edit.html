@@ -17,8 +17,8 @@
     <p>이름 : <input type="text" name="name" th:field="*{name}" th:value="*{name}" th:errorclass="field-error" /></p>
     <div class="field-error" th:errors="*{name}" />
 
-    <p>권한 : <input type="text" name="auth" th:field="*{auth}" th:value="*{auth}" th:errorclass="field-error" /></p>
-    <div class="field-error" th:errors="*{auth}" />
+    <p>권한 : <label><input type="radio" name="auth" th:field="*{auth}" th:checked="*{auth eq 'SYSTEM_ADMIN'}" value="SYSTEM_ADMIN">SYSTEM_ADMIN</label>
+             <label><input type="radio" name="auth" th:field="*{auth}" th:checked="*{auth eq 'USER'}" value="USER">USER</label></p>
     <input type="submit" value="수정">
   </form>
 </body>
