@@ -1,5 +1,4 @@
-# 기술과제
-Spring Boot를 활용하여 제작한 기술과제입니다.
+# 개발환경
 - Java 17
 - Spring Boot 3.0.3
 - MariaDB 10.8
