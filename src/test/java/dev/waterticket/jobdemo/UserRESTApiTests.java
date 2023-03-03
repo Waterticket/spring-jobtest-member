@@ -3,6 +3,7 @@ package dev.waterticket.jobdemo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.waterticket.jobdemo.user.domain.User;
 import dev.waterticket.jobdemo.user.dto.UserAddRequest;
+import dev.waterticket.jobdemo.user.dto.UserDeleteRequest;
 import dev.waterticket.jobdemo.user.dto.UserUpdateNameRequest;
 import dev.waterticket.jobdemo.user.service.UserService;
 import org.junit.jupiter.api.AfterAll;
@@ -125,6 +126,45 @@ public class UserRESTApiTests {
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
+    public void deleteAccount_assertOk() throws Exception {
+        this.userService.insert(User.builder()
+                .id("user_rest_api_tests_delete")
+                .password("user_rest_api_tests_delete")
+                .name("user_rest_api_tests_delete")
+                .auth("USER")
+                .build());
+
+        UserDeleteRequest userDeleteRequest = UserDeleteRequest.builder()
+                .id("user_rest_api_tests_delete")
+                .build();
+        String content = objectMapper.writeValueAsString(userDeleteRequest);
+
+        mockMvc.perform(delete("/api/user")
+                        .content(content)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    public void deleteAccountInvalidUser_assertNotFound() throws Exception {
+        UserDeleteRequest userDeleteRequest = UserDeleteRequest.builder()
+                .id(invalid_id)
+                .build();
+        String content = objectMapper.writeValueAsString(userDeleteRequest);
+
+        mockMvc.perform(delete("/api/user")
+                        .content(content)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
                 .andExpect(status().isNotFound())
                 .andDo(print());
     }
