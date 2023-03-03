@@ -56,30 +56,9 @@ public class UserRESTApiTests {
     }
 
     @Test
-    public void getAccountWithNoAuth_assertUnAuthorized() throws Exception {
+    public void getAccount_assertOk() throws Exception {
         mockMvc.perform(get("/api/user"))
-                .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    public void getAccountWithAuth_assertOk() throws Exception {
-        mockMvc.perform(get("/api/user")
-                .header("Authorization", "Basic " + id + ":" + password))
                 .andExpect(status().isOk());
-    }
-
-    @Test
-    public void getAccountWithWrongID_assertUnAuthorized() throws Exception {
-        mockMvc.perform(get("/api/user")
-                        .header("Authorization", "Basic " + id + "wrong" + ":" + password))
-                .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    public void getAccountWithWrongPassword_assertUnAuthorized() throws Exception {
-        mockMvc.perform(get("/api/user")
-                        .header("Authorization", "Basic " + id + ":" + password + "wrong"))
-                .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -92,7 +71,6 @@ public class UserRESTApiTests {
         String content = objectMapper.writeValueAsString(userAddRequest);
 
         mockMvc.perform(post("/api/user")
-                        .header("Authorization", "Basic " + id + ":" + password)
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -112,7 +90,6 @@ public class UserRESTApiTests {
         String content = objectMapper.writeValueAsString(userAddRequest);
 
         mockMvc.perform(post("/api/user")
-                        .header("Authorization", "Basic " + id + ":" + password)
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -129,7 +106,6 @@ public class UserRESTApiTests {
         String content = objectMapper.writeValueAsString(userUpdateNameRequest);
 
         mockMvc.perform(put("/api/user")
-                        .header("Authorization", "Basic " + id + ":" + password)
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -146,7 +122,6 @@ public class UserRESTApiTests {
         String content = objectMapper.writeValueAsString(userUpdateNameRequest);
 
         mockMvc.perform(put("/api/user")
-                        .header("Authorization", "Basic " + id + ":" + password)
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
