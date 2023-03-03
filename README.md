@@ -3,6 +3,8 @@ Spring Boot를 활용하여 제작한 기술과제입니다.
 
 - [Specification](./SPECIFICATION.md)
 
+<br>
+
 ## 설계
 
 ### `SYSTEM_USER` 테이블
@@ -65,3 +67,8 @@ DML을 추가하고 나서는 바로 로그인이 불가능하기 때문에, `/s
 생성되는 관리자 계정의 로그인 정보는 `user1 : user1_pw`이며, CleanUp 코드는 `UserTest` 테스트 파일에 작성 후 주석처리 해두었습니다.
 
 추가로 REST API 테스트 코드도 작성하였으며, `UserRESTApiTest` 파일에서 확인하실 수 있습니다.
+
+<br>
+
+### 보안
+보안을 위해 에러시에 stacktrace를 꺼둔 상태이며, 필요하시다면 `application.properties` 파일에서 `server.error.include-stacktrace=always`로 변경하시면 됩니다.
