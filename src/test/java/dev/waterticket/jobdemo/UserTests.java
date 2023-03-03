@@ -29,7 +29,7 @@ public class UserTests {
     public void addUserAccount() {
         user1 = User.builder()
                 .id("user1")
-                .password("user1")
+                .password("user1_pw")
                 .name("user1")
                 .auth("SYSTEM_ADMIN")
                 .build();
@@ -37,7 +37,7 @@ public class UserTests {
 
         user2 = User.builder()
                 .id("user2")
-                .password("user2")
+                .password("user2_pw")
                 .name("user2")
                 .auth("USER")
                 .build();
@@ -59,9 +59,10 @@ public class UserTests {
         assertEquals("user1_new", newName);
     }
 
-    @AfterAll
-    public void deleteUserAccount() {
-        this.userService.delete(user1.getId());
-        this.userService.delete(user2.getId());
-    }
+    // CleanUp Code
+//    @AfterAll
+//    public void deleteUserAccount() {
+//        this.userService.delete(user1.getId());
+//        this.userService.delete(user2.getId());
+//    }
 }
